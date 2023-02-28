@@ -1,9 +1,9 @@
-package com.phakel.ginkgo.resource;
+package com.phakel.ginkgo.tracker.resource;
 
-import com.phakel.ginkgo.form.user.LoginForm;
-import com.phakel.ginkgo.form.user.RegisterForm;
-import com.phakel.ginkgo.service.IUserService;
-import com.phakel.ginkgo.util.ResponseUtil;
+import com.phakel.ginkgo.tracker.form.user.LoginForm;
+import com.phakel.ginkgo.tracker.form.user.RegisterForm;
+import com.phakel.ginkgo.tracker.service.IUserService;
+import com.phakel.ginkgo.tracker.util.ResponseUtil;
 
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;

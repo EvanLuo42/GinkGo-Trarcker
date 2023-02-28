@@ -1,6 +1,6 @@
-package com.phakel.ginkgo.error;
+package com.phakel.ginkgo.tracker.error;
 
-import com.phakel.ginkgo.util.Peer;
+import com.phakel.ginkgo.tracker.util.Peer;
 
 import java.util.List;
 import java.util.Optional;

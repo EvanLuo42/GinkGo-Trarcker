@@ -1,9 +1,9 @@
-package com.phakel.ginkgo.util;
+package com.phakel.ginkgo.tracker.util;
 
-import com.phakel.ginkgo.Result;
-import com.phakel.ginkgo.dto.DTO;
-import com.phakel.ginkgo.error.Error;
-import com.phakel.ginkgo.error.ErrorToHttpCode;
+import com.phakel.ginkgo.tracker.Result;
+import com.phakel.ginkgo.tracker.dto.DTO;
+import com.phakel.ginkgo.tracker.error.Error;
+import com.phakel.ginkgo.tracker.error.ErrorToHttpCode;
 
 import javax.ws.rs.core.Response;
 

@@ -1,4 +1,4 @@
-package com.phakel.ginkgo.util;
+package com.phakel.ginkgo.tracker.util;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -1,7 +1,7 @@
-package com.phakel.ginkgo.entity;
+package com.phakel.ginkgo.tracker.entity;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
-import com.phakel.ginkgo.dto.UserDTO;
+import com.phakel.ginkgo.tracker.dto.UserDTO;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

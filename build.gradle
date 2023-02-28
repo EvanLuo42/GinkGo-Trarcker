@@ -33,7 +33,7 @@ dependencies {
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.26'
 }
 
-group 'com.phakel.ginkgo'
+group 'com.phakel.ginkgo.tracker'
 version '1.0-SNAPSHOT'
 
 java {

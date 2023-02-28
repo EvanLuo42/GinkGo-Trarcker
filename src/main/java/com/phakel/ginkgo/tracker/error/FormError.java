@@ -1,4 +1,4 @@
-package com.phakel.ginkgo.error;
+package com.phakel.ginkgo.tracker.error;
 
 import java.util.List;
 

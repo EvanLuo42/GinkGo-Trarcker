@@ -1,15 +1,15 @@
-package com.phakel.ginkgo.service.impl;
+package com.phakel.ginkgo.tracker.service.impl;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
-import com.phakel.ginkgo.Result;
-import com.phakel.ginkgo.dto.TokenDTO;
-import com.phakel.ginkgo.dto.UserDTO;
-import com.phakel.ginkgo.entity.User;
-import com.phakel.ginkgo.error.*;
-import com.phakel.ginkgo.error.Error;
-import com.phakel.ginkgo.form.user.LoginForm;
-import com.phakel.ginkgo.form.user.RegisterForm;
-import com.phakel.ginkgo.service.IUserService;
+import com.phakel.ginkgo.tracker.Result;
+import com.phakel.ginkgo.tracker.dto.TokenDTO;
+import com.phakel.ginkgo.tracker.dto.UserDTO;
+import com.phakel.ginkgo.tracker.entity.User;
+import com.phakel.ginkgo.tracker.error.Error;
+import com.phakel.ginkgo.tracker.error.*;
+import com.phakel.ginkgo.tracker.form.user.LoginForm;
+import com.phakel.ginkgo.tracker.form.user.RegisterForm;
+import com.phakel.ginkgo.tracker.service.IUserService;
 import io.smallrye.jwt.build.Jwt;
 
 import javax.enterprise.context.ApplicationScoped;

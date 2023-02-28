@@ -1,6 +1,6 @@
-package com.phakel.ginkgo.form.user;
+package com.phakel.ginkgo.tracker.form.user;
 
-import com.phakel.ginkgo.form.Form;
+import com.phakel.ginkgo.tracker.form.Form;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.hibernate.validator.constraints.Length;

@@ -1,4 +1,4 @@
-package com.phakel.ginkgo.dto;
+package com.phakel.ginkgo.tracker.dto;
 
 import lombok.Data;
 

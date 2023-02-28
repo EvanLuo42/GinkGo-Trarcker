@@ -1,4 +1,4 @@
-package com.phakel.ginkgo;
+package com.phakel.ginkgo.tracker;
 
 import io.quarkus.test.junit.QuarkusIntegrationTest;
 
