@@ -1,7 +1,5 @@
 package com.phakel.ginkgo.tracker.entity;
 
-import at.favre.lib.crypto.bcrypt.BCrypt;
-import com.phakel.ginkgo.tracker.dto.UserDTO;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -14,10 +12,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 @EqualsAndHashCode(callSuper = true)
-@Entity(name = "user_table")
+@Entity(name = "node_table")
 @Data
 @NoArgsConstructor
-public class User extends PanacheEntityBase {
+public class Node extends PanacheEntityBase {
     @Id
     @Column
     @GeneratedValue(generator = "UUID")
@@ -25,25 +23,5 @@ public class User extends PanacheEntityBase {
     private String id;
 
     @Column(length = 40, unique = true, nullable = false)
-    private String username;
-
-    @Column(nullable = false)
-    private String password;
-
-    @Column
-    private String email;
-
-    @Column
-    private UserRole role;
-
-    public UserDTO toDTO() {
-        var userDTO = new UserDTO();
-        userDTO.setUsername(this.getUsername());
-        userDTO.setEmail(this.getEmail());
-        return userDTO;
-    }
-
-    public void setPassword(String password) {
-        this.password = BCrypt.withDefaults().hashToString(12, password.toCharArray());
-    }
+    private String domain;
 }

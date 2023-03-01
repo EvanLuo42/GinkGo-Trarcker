@@ -5,6 +5,7 @@ import com.phakel.ginkgo.tracker.Result;
 import com.phakel.ginkgo.tracker.dto.TokenDTO;
 import com.phakel.ginkgo.tracker.dto.UserDTO;
 import com.phakel.ginkgo.tracker.entity.User;
+import com.phakel.ginkgo.tracker.entity.UserRole;
 import com.phakel.ginkgo.tracker.error.Error;
 import com.phakel.ginkgo.tracker.error.*;
 import com.phakel.ginkgo.tracker.form.user.LoginForm;
@@ -16,8 +17,6 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
 import javax.validation.Validator;
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.Optional;
 
 @ApplicationScoped
@@ -29,7 +28,7 @@ public class UserService implements IUserService {
     public Result<UserDTO, NotFoundError> getUserById(String userId) {
         Optional<User> user = User.findByIdOptional(userId);
         return user.isPresent() ?
-                new Result.Success<>(user.get().to()) :
+                new Result.Success<>(user.get().toDTO()) :
                 new Result.Failure<>(new NotFoundError("user.notfound"));
     }
 
@@ -40,16 +39,24 @@ public class UserService implements IUserService {
         if (!form.getViolations().isEmpty())
             return new Result.Failure<>(new FormError(form.getViolations()));
 
+
+        if (User.count("username", form.getUsername()) != 0)
+            return new Result.Failure<>(new ConflictError("user.name.conflict"));
+
         var newUser = new User();
         newUser.setUsername(form.getUsername());
         newUser.setPassword(form.getPassword());
         newUser.setEmail(form.getEmail());
-
-        if (User.count("username", newUser.getUsername()) != 0)
-            return new Result.Failure<>(new ConflictError("user.name.conflict"));
+        newUser.setRole(UserRole.USER);
 
         User.persist(newUser);
-        return new Result.Success<>(((User) User.find("username", newUser.getUsername()).firstResult()).to());
+        return new Result.Success<>(
+                ((User) User
+                        .find("username",
+                                newUser.getUsername()
+                        ).firstResult()
+                ).toDTO()
+        );
     }
 
     @Override
@@ -70,7 +77,7 @@ public class UserService implements IUserService {
                 new TokenDTO(
                         Jwt.preferredUserName(user.getUsername())
                                 .issuer("https://example.com/issuer")
-                                .groups(new HashSet<>(Arrays.asList("User", "Admin")))
+                                .groups(String.valueOf(user.getRole()).toLowerCase())
                                 .sign()
                 )
         );

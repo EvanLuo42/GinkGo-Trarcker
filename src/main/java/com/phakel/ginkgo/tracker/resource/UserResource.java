@@ -23,7 +23,7 @@ public class UserResource {
 
     @GET
     @Path("/{userId}")
-    @RolesAllowed({ "User", "Admin" })
+    @RolesAllowed({ "user", "admin" })
     public Response getUserByUserId(@Context SecurityContext ctx, String userId) {
         return ResponseUtil.withResult(userService.getUserById(userId));
     }
