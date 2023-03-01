@@ -1,7 +1,7 @@
 package com.phakel.ginkgo.tracker.entity;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
-import com.phakel.ginkgo.tracker.dto.UserDTO;
+import com.phakel.ginkgo.tracker.dto.UserDto;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -36,10 +36,11 @@ public class User extends PanacheEntityBase {
     @Column
     private UserRole role;
 
-    public UserDTO toDTO() {
-        var userDTO = new UserDTO();
+    public UserDto toDTO() {
+        var userDTO = new UserDto();
         userDTO.setUsername(this.getUsername());
         userDTO.setEmail(this.getEmail());
+        userDTO.setId(this.getId());
         return userDTO;
     }
 

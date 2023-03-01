@@ -2,16 +2,18 @@ package com.phakel.ginkgo.tracker.service.impl;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
 import com.phakel.ginkgo.tracker.Result;
-import com.phakel.ginkgo.tracker.dto.TokenDTO;
-import com.phakel.ginkgo.tracker.dto.UserDTO;
+import com.phakel.ginkgo.tracker.dto.TokenDto;
+import com.phakel.ginkgo.tracker.dto.UserDto;
 import com.phakel.ginkgo.tracker.entity.User;
 import com.phakel.ginkgo.tracker.entity.UserRole;
 import com.phakel.ginkgo.tracker.error.Error;
 import com.phakel.ginkgo.tracker.error.*;
 import com.phakel.ginkgo.tracker.form.user.LoginForm;
 import com.phakel.ginkgo.tracker.form.user.RegisterForm;
+import com.phakel.ginkgo.tracker.repository.UserRepository;
 import com.phakel.ginkgo.tracker.service.IUserService;
 import io.smallrye.jwt.build.Jwt;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -24,9 +26,15 @@ public class UserService implements IUserService {
     @Inject
     Validator validator;
 
+    @Inject
+    UserRepository userRepository;
+
+    @ConfigProperty(name = "jwt.issuer")
+    Optional<String> issuer;
+
     @Override
-    public Result<UserDTO, NotFoundError> getUserById(String userId) {
-        Optional<User> user = User.findByIdOptional(userId);
+    public Result<UserDto, ? extends Error> getUserById(String userId) {
+        Optional<User> user = userRepository.findByUserIdOptional(userId);
         return user.isPresent() ?
                 new Result.Success<>(user.get().toDTO()) :
                 new Result.Failure<>(new NotFoundError("user.notfound"));
@@ -34,13 +42,12 @@ public class UserService implements IUserService {
 
     @Transactional
     @Override
-    public Result<UserDTO, ? extends Error> register(RegisterForm form) {
+    public Result<UserDto, ? extends Error> register(RegisterForm form) {
         form.setViolations(validator.validate(form));
         if (!form.getViolations().isEmpty())
             return new Result.Failure<>(new FormError(form.getViolations()));
 
-
-        if (User.count("username", form.getUsername()) != 0)
+        if (userRepository.isUserExistByUsername(form.getUsername()))
             return new Result.Failure<>(new ConflictError("user.name.conflict"));
 
         var newUser = new User();
@@ -49,34 +56,31 @@ public class UserService implements IUserService {
         newUser.setEmail(form.getEmail());
         newUser.setRole(UserRole.USER);
 
-        User.persist(newUser);
+        userRepository.persist(newUser);
         return new Result.Success<>(
-                ((User) User
-                        .find("username",
-                                newUser.getUsername()
-                        ).firstResult()
-                ).toDTO()
+                userRepository.findByUsername(newUser.getUsername()).toDTO()
         );
     }
 
     @Override
-    public Result<TokenDTO, ? extends Error> login(LoginForm form) {
+    public Result<TokenDto, ? extends Error> login(LoginForm form) {
         form.setViolations(validator.validate(form));
         if (!form.getViolations().isEmpty())
             return new Result.Failure<>(new FormError(form.getViolations()));
 
-        if (User.count("username", form.getUsername()) == 0)
+        if (!userRepository.isUserExistByUsername(form.getUsername()))
             return new Result.Failure<>(new NotFoundError("user.notfound"));
 
-        var user = (User) User.find("username", form.getUsername()).firstResult();
+        var user = userRepository.findByUsername(form.getUsername());
 
         if (!BCrypt.verifyer().verify(form.getPassword().toCharArray(), user.getPassword()).verified)
             return new Result.Failure<>(new PasswordIncorrectError("user.password.incorrect"));
 
         return new Result.Success<>(
-                new TokenDTO(
-                        Jwt.preferredUserName(user.getUsername())
-                                .issuer("https://example.com/issuer")
+                new TokenDto(
+                        Jwt
+                                .issuer(issuer.orElse("gink-go.com"))
+                                .preferredUserName(user.getUsername())
                                 .groups(String.valueOf(user.getRole()).toLowerCase())
                                 .sign()
                 )

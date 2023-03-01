@@ -1,6 +1,6 @@
 package com.phakel.ginkgo.tracker.error.mapper;
 
-import com.phakel.ginkgo.tracker.util.Peer;
+import com.phakel.ginkgo.tracker.error.AuthenticationFailedError;
 import io.quarkus.arc.Priority;
 import io.quarkus.security.AuthenticationFailedException;
 
@@ -15,7 +15,7 @@ public class AuthenticationFailedExceptionMapper implements ExceptionMapper<Auth
     public Response toResponse(AuthenticationFailedException exception) {
         return Response
                 .status(Response.Status.UNAUTHORIZED)
-                .entity(Peer.of("message", "exception.unauthorized"))
+                .entity(new AuthenticationFailedError("user.authentication.failed"))
                 .build();
     }
 }

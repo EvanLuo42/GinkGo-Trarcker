@@ -1,14 +1,14 @@
 package com.phakel.ginkgo.tracker.util;
 
 import com.phakel.ginkgo.tracker.Result;
-import com.phakel.ginkgo.tracker.dto.DTO;
+import com.phakel.ginkgo.tracker.dto.Dto;
 import com.phakel.ginkgo.tracker.error.Error;
 import com.phakel.ginkgo.tracker.error.ErrorToHttpCode;
 
 import javax.ws.rs.core.Response;
 
 public class ResponseUtil {
-    public static Response withResult(Result<? extends DTO, ? extends Error> result) {
+    public static Response withResult(Result<? extends Dto, ? extends Error> result) {
         return result.either(
                 success -> Response
                         .ok(success)

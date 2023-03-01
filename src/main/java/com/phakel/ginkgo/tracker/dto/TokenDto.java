@@ -5,6 +5,6 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class TokenDTO implements DTO {
+public class TokenDto implements Dto {
     private String token;
 }
