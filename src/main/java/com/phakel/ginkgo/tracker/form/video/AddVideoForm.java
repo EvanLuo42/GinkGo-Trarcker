@@ -4,11 +4,13 @@ import com.phakel.ginkgo.tracker.form.Form;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.jboss.resteasy.reactive.PartType;
+import org.jboss.resteasy.reactive.multipart.FileUpload;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.core.MediaType;
-import java.io.InputStream;
+import java.io.File;
+import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -27,5 +29,5 @@ public class AddVideoForm extends Form {
 
     @NotNull(message = "form.video.null")
     @PartType(MediaType.APPLICATION_OCTET_STREAM)
-    private InputStream video;
+    private List<File> videoSlices;
 }

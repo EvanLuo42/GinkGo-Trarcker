@@ -2,6 +2,7 @@ package com.phakel.ginkgo.tracker.service;
 
 import com.phakel.ginkgo.tracker.dto.Dto;
 import com.phakel.ginkgo.tracker.form.Form;
+import com.phakel.ginkgo.tracker.form.node.UploadVideoForm;
 import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
 
 import javax.ws.rs.*;
@@ -19,7 +20,7 @@ public interface INodeRestService {
     @POST
     @Path("/video")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
-    Dto postVideo(Form videoForm);
+    Dto postVideo(UploadVideoForm videoForm);
 
     @GET
     @Path("/video/{id}")

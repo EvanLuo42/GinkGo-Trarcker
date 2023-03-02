@@ -24,9 +24,4 @@ public class VideoRepository implements PanacheRepository<Video> {
     public boolean isVideoNotExistByVideoId(String videoId) {
         return findByVideoIdOptional(videoId).isEmpty();
     }
-
-    public boolean isVideoExistByHash(String hash) {
-        if (hash.isBlank() || hash.isEmpty()) return true;
-        return find("hash", hash).firstResultOptional().isPresent();
-    }
 }

@@ -31,9 +31,6 @@ public class Video extends PanacheEntityBase {
     @OneToOne
     private User author;
 
-    @Column(unique = true, nullable = false)
-    private String hash;
-
     @OneToMany
     private List<Comment> comments;
 
@@ -42,8 +39,7 @@ public class Video extends PanacheEntityBase {
                 id,
                 title,
                 description,
-                author.toDto(),
-                hash
+                author.toDto()
         );
     }
 }

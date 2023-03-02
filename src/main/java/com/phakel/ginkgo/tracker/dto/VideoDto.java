@@ -13,6 +13,4 @@ public class VideoDto implements Dto {
     private String description;
 
     private UserDto author;
-
-    private String hash;
 }
