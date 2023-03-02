@@ -36,15 +36,11 @@ public class User extends PanacheEntityBase {
     @Column
     private UserRole role;
 
-    public UserDto toDTO() {
-        var userDTO = new UserDto();
-        userDTO.setUsername(this.getUsername());
-        userDTO.setEmail(this.getEmail());
-        userDTO.setId(this.getId());
-        return userDTO;
-    }
-
     public void setPassword(String password) {
         this.password = BCrypt.withDefaults().hashToString(12, password.toCharArray());
+    }
+
+    public UserDto toDto() {
+        return new UserDto(id, username, email, role);
     }
 }

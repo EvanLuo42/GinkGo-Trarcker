@@ -34,9 +34,9 @@ public class UserService implements IUserService {
 
     @Override
     public Result<UserDto, ? extends Error> getUserById(String userId) {
-        Optional<User> user = userRepository.findByUserIdOptional(userId);
+        Optional<UserDto> user = userRepository.findByUsernameOptionalToDto(userId);
         return user.isPresent() ?
-                new Result.Success<>(user.get().toDTO()) :
+                new Result.Success<>(user.get()) :
                 new Result.Failure<>(new NotFoundError("user.notfound"));
     }
 
@@ -55,11 +55,9 @@ public class UserService implements IUserService {
         newUser.setPassword(form.getPassword());
         newUser.setEmail(form.getEmail());
         newUser.setRole(UserRole.USER);
+        newUser.persistAndFlush();
 
-        userRepository.persist(newUser);
-        return new Result.Success<>(
-                userRepository.findByUsername(newUser.getUsername()).toDTO()
-        );
+        return new Result.Success<>(newUser.toDto());
     }
 
     @Override

@@ -8,7 +8,7 @@ import com.phakel.ginkgo.tracker.error.ErrorToHttpCode;
 import javax.ws.rs.core.Response;
 
 public class ResponseUtil {
-    public static Response withResult(Result<? extends Dto, ? extends Error> result) {
+    public static Response withResult(Result<?, ? extends Error> result) {
         return result.either(
                 success -> Response
                         .ok(success)

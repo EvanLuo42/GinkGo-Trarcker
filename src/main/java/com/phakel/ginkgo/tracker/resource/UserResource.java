@@ -1,9 +1,11 @@
 package com.phakel.ginkgo.tracker.resource;
 
+import com.phakel.ginkgo.tracker.entity.UserRole;
 import com.phakel.ginkgo.tracker.form.user.LoginForm;
 import com.phakel.ginkgo.tracker.form.user.RegisterForm;
 import com.phakel.ginkgo.tracker.service.IUserService;
 import com.phakel.ginkgo.tracker.util.ResponseUtil;
+import io.quarkus.security.Authenticated;
 
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
@@ -23,8 +25,8 @@ public class UserResource {
 
     @GET
     @Path("/{userId}")
-    @RolesAllowed({ "user", "admin" })
-    public Response getUserByUserId(@Context SecurityContext ctx, String userId) {
+    @Authenticated
+    public Response getUserByUserId(String userId) {
         return ResponseUtil.withResult(userService.getUserById(userId));
     }
 
