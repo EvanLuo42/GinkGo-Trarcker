@@ -10,7 +10,7 @@ import com.phakel.ginkgo.tracker.form.video.AddCommentForm;
 import com.phakel.ginkgo.tracker.repository.CommentRepository;
 import com.phakel.ginkgo.tracker.repository.UserRepository;
 import com.phakel.ginkgo.tracker.repository.VideoRepository;
-import com.phakel.ginkgo.tracker.service.IVideoService;
+import com.phakel.ginkgo.tracker.service.ICommentService;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -18,7 +18,7 @@ import javax.validation.Validator;
 import java.util.List;
 
 @ApplicationScoped
-public class VideoService implements IVideoService {
+public class CommentService implements ICommentService {
     @Inject
     VideoRepository videoRepository;
 
@@ -33,8 +33,10 @@ public class VideoService implements IVideoService {
 
     @Override
     public Result<List<CommentDto>, ? extends Error> getCommentsByVideoId(String videoId) {
-        List<CommentDto> comment = commentRepository.findCommentsByVideoIdToDto(videoId);
-        return new Result.Success<>(comment);
+        if (!videoRepository.isVideoExistByVideoId(videoId))
+            return new Result.Failure<>(new ConflictError("video.notfound"));
+
+        return new Result.Success<>(commentRepository.findCommentsByVideoIdToDto(videoId));
     }
 
     @Override

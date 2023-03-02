@@ -8,13 +8,11 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @EqualsAndHashCode(callSuper = true)
-@Entity(name = "user_table")
+@Entity
+@Table(name = "user_table")
 @Data
 @NoArgsConstructor
 public class User extends PanacheEntityBase {

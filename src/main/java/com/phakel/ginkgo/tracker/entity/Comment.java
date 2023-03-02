@@ -10,7 +10,8 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 
 @EqualsAndHashCode(callSuper = true)
-@Entity(name = "video_comment_db")
+@Entity
+@Table(name = "video_comment_db")
 @Data
 @NoArgsConstructor
 public class Comment extends PanacheEntityBase {

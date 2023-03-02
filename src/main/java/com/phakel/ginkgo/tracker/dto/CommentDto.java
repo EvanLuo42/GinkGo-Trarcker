@@ -8,7 +8,7 @@ import lombok.Data;
 public class CommentDto implements Dto {
     private String id;
 
-    private UserDto authorName;
+    private UserDto author;
 
     private String text;
 }

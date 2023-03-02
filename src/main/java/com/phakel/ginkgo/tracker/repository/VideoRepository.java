@@ -10,18 +10,21 @@ import java.util.Optional;
 @ApplicationScoped
 public class VideoRepository implements PanacheRepository<Video> {
     public Video findByVideoId(String videoId) {
-        return find("videoId", videoId).firstResult();
+        return find("id", videoId).firstResult();
     }
 
     public Optional<Video> findByVideoIdOptional(String videoId) {
-        return find("videoId", videoId).firstResultOptional();
+        return find("id", videoId).firstResultOptional();
     }
 
     public Optional<VideoDto> findByVideoIdOptionalToDto(String videoId) {
-        return find("videoId", videoId).project(VideoDto.class).firstResultOptional();
+        return find("id", videoId)
+                .stream()
+                .map(Video::toDto)
+                .findFirst();
     }
 
     public boolean isVideoExistByVideoId(String videoId) {
-        return findByVideoId(videoId) != null;
+        return findByVideoIdOptional(videoId).isPresent();
     }
 }

@@ -1,5 +1,6 @@
 package com.phakel.ginkgo.tracker.dto;
 
+import com.phakel.ginkgo.tracker.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -12,5 +13,7 @@ public class VideoDto implements Dto {
 
     private String description;
 
-    private String author;
+    private UserDto author;
+
+    private String hash;
 }

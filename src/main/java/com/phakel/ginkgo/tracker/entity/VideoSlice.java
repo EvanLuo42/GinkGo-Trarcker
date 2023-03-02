@@ -10,7 +10,8 @@ import javax.persistence.*;
 import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)
-@Entity(name = "video_slice_db")
+@Entity
+@Table(name = "video_slice_db")
 @Data
 @NoArgsConstructor
 public class VideoSlice extends PanacheEntityBase {

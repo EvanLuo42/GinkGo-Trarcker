@@ -1,5 +1,6 @@
 package com.phakel.ginkgo.tracker.entity;
 
+import com.phakel.ginkgo.tracker.dto.VideoDto;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -10,7 +11,8 @@ import javax.persistence.*;
 import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)
-@Entity(name = "video_db")
+@Entity
+@Table(name = "video_db")
 @Data
 @NoArgsConstructor
 public class Video extends PanacheEntityBase {
@@ -34,4 +36,14 @@ public class Video extends PanacheEntityBase {
 
     @OneToMany
     private List<Comment> comments;
+
+    public VideoDto toDto() {
+        return new VideoDto(
+                id,
+                title,
+                description,
+                author.toDto(),
+                hash
+        );
+    }
 }
