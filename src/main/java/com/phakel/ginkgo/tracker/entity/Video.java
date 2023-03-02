@@ -31,7 +31,7 @@ public class Video extends PanacheEntityBase {
     @OneToOne
     private User author;
 
-    @Column
+    @Column(unique = true, nullable = false)
     private String hash;
 
     @OneToMany

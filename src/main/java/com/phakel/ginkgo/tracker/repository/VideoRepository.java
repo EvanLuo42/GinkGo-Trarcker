@@ -9,9 +9,6 @@ import java.util.Optional;
 
 @ApplicationScoped
 public class VideoRepository implements PanacheRepository<Video> {
-    public Video findByVideoId(String videoId) {
-        return find("id", videoId).firstResult();
-    }
 
     public Optional<Video> findByVideoIdOptional(String videoId) {
         return find("id", videoId).firstResultOptional();
@@ -24,7 +21,12 @@ public class VideoRepository implements PanacheRepository<Video> {
                 .findFirst();
     }
 
-    public boolean isVideoExistByVideoId(String videoId) {
-        return findByVideoIdOptional(videoId).isPresent();
+    public boolean isVideoNotExistByVideoId(String videoId) {
+        return findByVideoIdOptional(videoId).isEmpty();
+    }
+
+    public boolean isVideoExistByHash(String hash) {
+        if (hash.isBlank() || hash.isEmpty()) return true;
+        return find("hash", hash).firstResultOptional().isPresent();
     }
 }

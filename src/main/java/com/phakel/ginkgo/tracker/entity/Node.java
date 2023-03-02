@@ -20,6 +20,6 @@ public class Node extends PanacheEntityBase {
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     private String id;
 
-    @Column(length = 40, unique = true, nullable = false)
+    @Column(unique = true, nullable = false)
     private String domain;
 }

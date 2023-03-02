@@ -5,14 +5,10 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class VideoDto implements Dto {
+public class ReplyDto implements Dto {
     private String id;
 
-    private String title;
-
-    private String description;
+    private String text;
 
     private UserDto author;
-
-    private String hash;
 }

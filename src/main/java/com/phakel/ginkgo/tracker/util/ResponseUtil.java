@@ -1,7 +1,6 @@
 package com.phakel.ginkgo.tracker.util;
 
 import com.phakel.ginkgo.tracker.Result;
-import com.phakel.ginkgo.tracker.dto.Dto;
 import com.phakel.ginkgo.tracker.error.Error;
 import com.phakel.ginkgo.tracker.error.ErrorToHttpCode;
 

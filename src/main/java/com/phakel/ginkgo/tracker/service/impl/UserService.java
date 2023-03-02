@@ -66,20 +66,19 @@ public class UserService implements IUserService {
         if (!form.getViolations().isEmpty())
             return new Result.Failure<>(new FormError(form.getViolations()));
 
-        if (!userRepository.isUserExistByUsername(form.getUsername()))
+        var user = userRepository.findByUsernameOptional(form.getUsername());
+        if (user.isEmpty())
             return new Result.Failure<>(new NotFoundError("user.notfound"));
 
-        var user = userRepository.findByUsername(form.getUsername());
-
-        if (!BCrypt.verifyer().verify(form.getPassword().toCharArray(), user.getPassword()).verified)
+        if (!BCrypt.verifyer().verify(form.getPassword().toCharArray(), user.get().getPassword()).verified)
             return new Result.Failure<>(new PasswordIncorrectError("user.password.incorrect"));
 
         return new Result.Success<>(
                 new TokenDto(
                         Jwt
                                 .issuer(issuer.orElse("gink-go.com"))
-                                .preferredUserName(user.getUsername())
-                                .groups(String.valueOf(user.getRole()).toLowerCase())
+                                .preferredUserName(user.get().getUsername())
+                                .groups(String.valueOf(user.get().getRole()).toLowerCase())
                                 .sign()
                 )
         );

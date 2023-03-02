@@ -2,11 +2,14 @@ package com.phakel.ginkgo.tracker.service.impl;
 
 import com.phakel.ginkgo.tracker.Result;
 import com.phakel.ginkgo.tracker.dto.CommentDto;
+import com.phakel.ginkgo.tracker.dto.ReplyDto;
 import com.phakel.ginkgo.tracker.entity.Comment;
-import com.phakel.ginkgo.tracker.error.ConflictError;
+import com.phakel.ginkgo.tracker.entity.Reply;
 import com.phakel.ginkgo.tracker.error.Error;
 import com.phakel.ginkgo.tracker.error.FormError;
+import com.phakel.ginkgo.tracker.error.NotFoundError;
 import com.phakel.ginkgo.tracker.form.video.AddCommentForm;
+import com.phakel.ginkgo.tracker.form.video.AddReplyForm;
 import com.phakel.ginkgo.tracker.repository.CommentRepository;
 import com.phakel.ginkgo.tracker.repository.UserRepository;
 import com.phakel.ginkgo.tracker.repository.VideoRepository;
@@ -33,10 +36,10 @@ public class CommentService implements ICommentService {
 
     @Override
     public Result<List<CommentDto>, ? extends Error> getCommentsByVideoId(String videoId) {
-        if (!videoRepository.isVideoExistByVideoId(videoId))
-            return new Result.Failure<>(new ConflictError("video.notfound"));
+        if (videoRepository.isVideoNotExistByVideoId(videoId))
+            return new Result.Failure<>(new NotFoundError("video.notfound"));
 
-        return new Result.Success<>(commentRepository.findCommentsByVideoIdToDto(videoId));
+        return new Result.Success<>(commentRepository.findByVideoIdToDto(videoId));
     }
 
     @Override
@@ -45,12 +48,12 @@ public class CommentService implements ICommentService {
         if (!form.getViolations().isEmpty())
             return new Result.Failure<>(new FormError(form.getViolations()));
 
-        if (!videoRepository.isVideoExistByVideoId(videoId))
-            return new Result.Failure<>(new ConflictError("video.notfound"));
+        if (videoRepository.isVideoNotExistByVideoId(videoId))
+            return new Result.Failure<>(new NotFoundError("video.notfound"));
 
-        var author = userRepository.findByUserIdOptional(form.getUserId());
+        var author = userRepository.findByUserIdOptional(form.getAuthorId());
         if (author.isEmpty())
-            return new Result.Failure<>(new ConflictError("user.notfound"));
+            return new Result.Failure<>(new NotFoundError("user.notfound"));
 
         var comment = new Comment();
         comment.setText(form.getText());
@@ -58,5 +61,34 @@ public class CommentService implements ICommentService {
         comment.persistAndFlush();
 
         return new Result.Success<>(comment.toDto());
+    }
+
+    @Override
+    public Result<ReplyDto, ? extends Error> addReplyToComment(String commentId, AddReplyForm form) {
+        form.setViolations(validator.validate(form));
+        if (!form.getViolations().isEmpty())
+            return new Result.Failure<>(new FormError(form.getViolations()));
+
+        if (!commentRepository.isCommentExistByCommentId(commentId))
+            return new Result.Failure<>(new NotFoundError("comment.notfound"));
+
+        var author = userRepository.findByUserIdOptional(form.getAuthorId());
+        if (author.isEmpty())
+            return new Result.Failure<>(new NotFoundError("user.notfound"));
+
+        var reply = new Reply();
+        reply.setText(form.getText());
+        reply.setAuthor(author.get());
+        reply.persistAndFlush();
+
+        return new Result.Success<>(reply.toDto());
+    }
+
+    @Override
+    public Result<List<ReplyDto>, ? extends Error> getRepliesByCommentId(String commentId) {
+        if (!commentRepository.isCommentExistByCommentId(commentId))
+            return new Result.Failure<>(new NotFoundError("comment.notfound"));
+
+        return new Result.Success<>(commentRepository.findRepliesByCommentIdToDto(commentId));
     }
 }

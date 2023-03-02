@@ -10,19 +10,19 @@ import javax.validation.constraints.*;
 @Getter
 @Setter
 public class RegisterForm extends Form {
-    @NotBlank(message = "form.username.blank")
-    @NotNull(message = "form.username.null")
-    @Length(max = 40, min = 3, message = "form.username.length")
+    @NotBlank(message = "form.user.name.blank")
+    @NotNull(message = "form.user.name.null")
+    @Length(max = 40, min = 3, message = "form.user.name.length")
     private String username;
 
-    @NotBlank(message = "form.password.blank")
-    @NotNull(message = "form.password.null")
-    @Length(max = 100, min = 5, message = "form.password.length")
+    @NotBlank(message = "form.user.password.blank")
+    @NotNull(message = "form.user.password.null")
+    @Length(max = 100, min = 5, message = "form.user.password.length")
     private String password;
 
-    @Email(message = "form.email.regex")
-    @NotBlank(message = "form.email.blank")
-    @NotNull(message = "form.email.null")
-    @Length(max = 40, min = 3, message = "form.username.length")
+    @Email(message = "form.user.email.regex")
+    @NotBlank(message = "form.user.email.blank")
+    @NotNull(message = "form.user.email.null")
+    @Length(max = 40, min = 3, message = "form.user.email.length")
     private String email;
 }

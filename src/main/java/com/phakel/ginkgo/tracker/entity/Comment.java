@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)
 @Entity
@@ -24,8 +25,11 @@ public class Comment extends PanacheEntityBase {
     @OneToOne
     private User author;
 
-    @Column
+    @Column(nullable = false)
     private String text;
+
+    @OneToMany
+    private List<Reply> replies;
 
     public CommentDto toDto() {
         return new CommentDto(id, author.toDto(), text);
